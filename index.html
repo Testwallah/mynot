@@ -1,375 +1,293 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>भारत क्विज़ Challenge 🇮🇳</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
-body{
-    min-height:100vh;
-    background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    overflow-x:hidden;
-}
-
-.quiz-box{
-    width:100%;
-    max-width:750px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,0.15);
-    border-radius:25px;
-    padding:30px;
-    box-shadow:0 10px 40px rgba(0,0,0,0.4);
-    color:white;
-    animation:fadeIn 1s ease;
-}
-
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.title{
-    text-align:center;
-    font-size:34px;
-    font-weight:700;
-    margin-bottom:10px;
-    background:linear-gradient(90deg,#ff9933,#ffffff,#138808);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.subtitle{
-    text-align:center;
-    color:#d1d5db;
-    margin-bottom:25px;
-}
-
-.question-count{
-    margin-bottom:15px;
-    font-size:15px;
-    color:#93c5fd;
-}
-
-.question{
-    font-size:24px;
-    font-weight:600;
-    margin-bottom:25px;
-    line-height:1.5;
-}
-
-.options{
-    display:grid;
-    gap:15px;
-}
-
-.option{
-    padding:15px 18px;
-    border-radius:16px;
-    border:2px solid rgba(255,255,255,0.15);
-    background:rgba(255,255,255,0.05);
-    cursor:pointer;
-    transition:0.3s;
-    font-size:17px;
-}
-
-.option:hover{
-    transform:scale(1.02);
-    background:rgba(255,255,255,0.12);
-    border-color:#38bdf8;
-}
-
-.correct{
-    background:#16a34a !important;
-    border-color:#22c55e !important;
-}
-
-.wrong{
-    background:#dc2626 !important;
-    border-color:#ef4444 !important;
-}
-
-.controls{
-    margin-top:25px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.score{
-    font-size:18px;
-    font-weight:600;
-    color:#facc15;
-}
-
-.btn{
-    padding:13px 25px;
-    border:none;
-    border-radius:14px;
-    background:linear-gradient(90deg,#ff6b00,#ffb700);
-    color:white;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-.btn:hover{
-    transform:scale(1.05);
-}
-
-.result{
-    text-align:center;
-    display:none;
-}
-
-.result h2{
-    font-size:40px;
-    margin-bottom:15px;
-}
-
-.result p{
-    font-size:22px;
-    margin-bottom:20px;
-}
-
-@media(max-width:600px){
-
-.question{
-    font-size:20px;
-}
-
-.option{
-    font-size:15px;
-}
-
-.title{
-    font-size:28px;
-}
-
-}
-</style>
-</head>
-
-<body>
-
-<div class="quiz-box">
-
-    <div id="quizArea">
-
-        <h1 class="title">भारत Quiz Challenge 🇮🇳🔥</h1>
-        <p class="subtitle">10 MCQs Modern Quiz App</p>
-
-        <div class="question-count" id="count"></div>
-
-        <div class="question" id="question"></div>
-
-        <div class="options" id="options"></div>
-
-        <div class="controls">
-            <div class="score">Score: <span id="score">0</span></div>
-            <button class="btn" onclick="nextQuestion()">Next ➜</button>
-        </div>
-
-    </div>
-
-    <div class="result" id="resultBox">
-        <h2>🎉 Quiz Completed</h2>
-        <p id="finalScore"></p>
-        <button class="btn" onclick="location.reload()">Play Again 🔥</button>
-    </div>
-
-</div>
-
-<script>
-
-const quiz = [
-
-{
-question:"भारत की राजधानी क्या है?",
-options:["मुंबई","दिल्ली","कोलकाता","चेन्नई"],
-answer:"दिल्ली"
-},
-
-{
-question:"HTML का पूरा नाम क्या है?",
-options:[
-"Hyper Text Markup Language",
-"High Text Machine Language",
-"Hyper Tool Multi Language",
-"Home Text Markup Language"
-],
-answer:"Hyper Text Markup Language"
-},
-
-{
-question:"भारत का राष्ट्रीय पशु कौन है?",
-options:["हाथी","शेर","बाघ","घोड़ा"],
-answer:"बाघ"
-},
-
-{
-question:"CSS का उपयोग किसलिए होता है?",
-options:[
-"स्टाइलिंग",
-"डेटाबेस",
-"गेम बनाने",
-"सर्वर बनाने"
-],
-answer:"स्टाइलिंग"
-},
-
-{
-question:"भारत का राष्ट्रीय खेल कौन सा माना जाता है?",
-options:["क्रिकेट","हॉकी","फुटबॉल","कबड्डी"],
-answer:"हॉकी"
-},
-
-{
-question:"JavaScript का उपयोग किसलिए होता है?",
-options:[
-"वेबसाइट को Interactive बनाने",
-"कपड़े डिजाइन करने",
-"वीडियो एडिट करने",
-"फोन बनाने"
-],
-answer:"वेबसाइट को Interactive बनाने"
-},
-
-{
-question:"तिरंगे में बीच का रंग कौन सा होता है?",
-options:["हरा","सफेद","केसरिया","नीला"],
-answer:"सफेद"
-},
-
-{
-question:"भारत का राष्ट्रीय गान किसने लिखा?",
-options:[
-"महात्मा गांधी",
-"रवीन्द्रनाथ टैगोर",
-"प्रेमचंद",
-"भगत सिंह"
-],
-answer:"रवीन्द्रनाथ टैगोर"
-},
-
-{
-question:"WWW का मतलब क्या होता है?",
-options:[
-"World Wide Web",
-"World Web Wide",
-"Web World Wide",
-"Wide World Web"
-],
-answer:"World Wide Web"
-},
-
-{
-question:"भारत की मुद्रा क्या है?",
-options:["डॉलर","रुपया","यूरो","येन"],
-answer:"रुपया"
-}
-
-];
-
-let current = 0;
-let score = 0;
-
-const question = document.getElementById("question");
-const options = document.getElementById("options");
-const scoreText = document.getElementById("score");
-const count = document.getElementById("count");
-
-function loadQuestion(){
-
-    let q = quiz[current];
-
-    count.innerHTML = `Question ${current+1} / ${quiz.length}`;
-
-    question.innerHTML = q.question;
-
-    options.innerHTML = "";
-
-    q.options.forEach(option => {
-
-        const btn = document.createElement("div");
-        btn.classList.add("option");
-        btn.innerHTML = option;
-
-        btn.onclick = () => checkAnswer(btn, q.answer);
-
-        options.appendChild(btn);
-
-    });
-
-}
-
-function checkAnswer(selected, correct){
-
-    const allOptions = document.querySelectorAll(".option");
-
-    allOptions.forEach(opt => {
-        opt.style.pointerEvents = "none";
-
-        if(opt.innerHTML === correct){
-            opt.classList.add("correct");
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartoon Gaming Hub 🎮</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Cartoon Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Cartoon Styles */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #4ade80; /* Fun Green Background */
+            background-image: radial-gradient(#22c55e 2px, transparent 2px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
         }
-    });
+        
+        h1, h2, h3, .bangers-font {
+            font-family: 'Bangers', cursive;
+            letter-spacing: 2px;
+        }
 
-    if(selected.innerHTML === correct){
+        /* Neo-brutalism Cartoon Borders */
+        .cartoon-box {
+            background-color: white;
+            border: 4px solid black;
+            border-radius: 16px;
+            box-shadow: 8px 8px 0px black;
+            transition: all 0.2s ease-in-out;
+        }
 
-        score++;
-        scoreText.innerHTML = score;
+        .cartoon-btn {
+            background-color: #facc15; /* Yellow */
+            border: 4px solid black;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0px black;
+            font-family: 'Bangers', cursive;
+            letter-spacing: 1px;
+            transition: all 0.1s;
+        }
 
-    }else{
-        selected.classList.add("wrong");
-    }
+        .cartoon-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px black;
+        }
 
-}
+        .cartoon-input {
+            border: 4px solid black;
+            border-radius: 12px;
+            box-shadow: inset 4px 4px 0px rgba(0,0,0,0.1);
+        }
 
-function nextQuestion(){
+        /* Annoying Ad Popups */
+        .popup-ad-container {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 999999;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="text-gray-900 pb-32"> <!-- pb-32 for sticky bottom ad -->
 
-    current++;
+    <!-- ================= NAVBAR ================= -->
+    <nav class="bg-purple-500 border-b-4 border-black p-4 sticky top-0 z-50 shadow-[0_8px_0px_rgba(0,0,0,1)]">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="text-3xl bangers-font text-white text-shadow-cartoon" style="text-shadow: 2px 2px 0 #000;">
+                <i class="fa-solid fa-gamepad text-yellow-400"></i> GAMER PRO
+            </div>
+            <!-- Desktop Menu -->
+            <ul class="hidden md:flex space-x-6 text-white bangers-font text-2xl" style="text-shadow: 2px 2px 0 #000;">
+                <li><a href="#" class="hover:text-yellow-400">Home</a></li>
+                <li><a href="#rewards" class="hover:text-yellow-400">Rewards</a></li>
+                <li><a href="#generator" class="hover:text-yellow-400">Generator</a></li>
+            </ul>
+            <!-- Mobile Menu Btn -->
+            <button class="md:hidden text-white text-2xl" onclick="alert('Bhai pehle Ads dekho! 😆')">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
 
-    if(current < quiz.length){
+    <!-- ================= AD 1 (TOP) ================= -->
+    <div class="my-6 text-center">
+        <p class="text-xs font-bold mb-1">Advertisement</p>
+        <!-- BEGIN AADS AD UNIT 2438783 -->
+        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
+          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
+                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
+        </div>
+        <!-- END AADS AD UNIT 2438783 -->
+    </div>
 
-        loadQuestion();
+    <!-- ================= HERO SECTION ================= -->
+    <header class="max-w-4xl mx-auto mt-8 px-4 text-center">
+        <div class="cartoon-box bg-blue-400 p-8">
+            <h1 class="text-5xl md:text-7xl text-white mb-4" style="text-shadow: 3px 3px 0 #000;">Welcome to Gaming Hub! 🚀</h1>
+            <p class="text-xl md:text-2xl font-bold mb-6 text-black">Get Free Rewards, Redeem Codes & Generate Resources Instantly!</p>
+            <a href="#generator" class="cartoon-btn text-2xl px-8 py-4 inline-block bg-yellow-400 text-black">Start Generating! ⚡</a>
+        </div>
+    </header>
 
-    }else{
+    <!-- ================= AD 2 (MIDDLE) ================= -->
+    <div class="my-8 text-center bg-red-200 border-y-4 border-black py-4">
+        <p class="text-xs font-bold mb-1">Bhai Ek Aur Ad Dekho 😂</p>
+        <!-- BEGIN AADS AD UNIT 2438783 -->
+        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
+          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
+                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
+        </div>
+        <!-- END AADS AD UNIT 2438783 -->
+    </div>
 
-        document.getElementById("quizArea").style.display = "none";
-        document.getElementById("resultBox").style.display = "block";
+    <!-- ================= REWARDS SECTION ================= -->
+    <section id="rewards" class="max-w-3xl mx-auto mt-12 px-4">
+        <div class="cartoon-box bg-pink-400 p-8 text-center">
+            <h2 class="text-4xl text-white mb-2" style="text-shadow: 2px 2px 0 #000;"><i class="fa-solid fa-gift"></i> Redeem Code</h2>
+            <p class="font-bold mb-6 text-black">Apna secret code yahan dalo aur magic dekho!</p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <input type="text" id="redeemInput" placeholder="ENTER CODE HERE..." class="cartoon-input w-full md:w-2/3 text-2xl p-4 font-bold text-center uppercase focus:outline-none">
+                <button onclick="redeemCode()" class="cartoon-btn w-full md:w-1/3 text-2xl py-4 bg-green-400">REDEEM NOW</button>
+            </div>
+            <p id="redeemMessage" class="mt-4 font-bold text-xl hidden"></p>
+        </div>
+    </section>
 
-        document.getElementById("finalScore").innerHTML =
-        `🔥 Your Score: ${score} / ${quiz.length}`;
+    <!-- ================= AD 3 (PARESAN KARNE WALA) ================= -->
+    <div class="my-10 text-center">
+        <!-- BEGIN AADS AD UNIT 2438783 -->
+        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
+          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
+                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
+        </div>
+        <!-- END AADS AD UNIT 2438783 -->
+    </div>
 
-    }
+    <!-- ================= GENERATOR SECTION ================= -->
+    <section id="generator" class="max-w-3xl mx-auto mt-12 px-4 mb-20">
+        <div class="cartoon-box bg-yellow-300 p-8">
+            <h2 class="text-4xl text-center mb-6 text-black" style="text-shadow: 2px 2px 0 white;"><i class="fa-solid fa-gem text-blue-500"></i> Resource Generator</h2>
+            
+            <div class="space-y-4 font-bold">
+                <div>
+                    <label class="block text-xl mb-2">1. Select Game 🎮</label>
+                    <select class="cartoon-input w-full p-4 text-xl">
+                        <option>Free Fire (Diamonds)</option>
+                        <option>BGMI (UC)</option>
+                        <option>Roblox (Robux)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xl mb-2">2. Enter Username 👤</label>
+                    <input type="text" placeholder="Gamer Name..." class="cartoon-input w-full p-4 text-xl">
+                </div>
+                <div>
+                    <label class="block text-xl mb-2">3. Amount 💰</label>
+                    <select class="cartoon-input w-full p-4 text-xl">
+                        <option>💎 10,000</option>
+                        <option>💎 50,000</option>
+                        <option>💎 99,999 (MAX)</option>
+                    </select>
+                </div>
 
-}
+                <div class="text-center pt-4">
+                    <button onclick="startGenerator()" id="genBtn" class="cartoon-btn text-3xl px-10 py-4 bg-blue-500 text-white w-full">GENERATE 🚀</button>
+                </div>
 
-loadQuestion();
+                <!-- Progress Bar -->
+                <div id="progressContainer" class="hidden mt-6">
+                    <p id="progressText" class="text-center text-xl mb-2">Connecting to server...</p>
+                    <div class="w-full h-8 border-4 border-black rounded-full bg-white overflow-hidden">
+                        <div id="progressBar" class="h-full bg-green-500 w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</script>
+    <!-- ================= POPUP AD (EXTREMELY ANNOYING) ================= -->
+    <div id="popupAd" class="popup-ad-container flex">
+        <div class="cartoon-box bg-white p-6 max-w-sm text-center relative">
+            <button onclick="closePopup()" class="absolute -top-4 -right-4 bg-red-500 text-white border-4 border-black rounded-full w-10 h-10 font-bold text-xl hover:bg-red-400">X</button>
+            <h2 class="text-2xl text-red-500 mb-4">Wait! Special Offer! 🛑</h2>
+            <!-- BEGIN AADS AD UNIT 2438783 -->
+            <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
+              <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
+                                style='border:0; padding:0; width:100%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
+            </div>
+            <!-- END AADS AD UNIT 2438783 -->
+            <p class="mt-4 text-sm font-bold">Please click the ad to support us! 🙏</p>
+        </div>
+    </div>
 
+    <!-- ================= STICKY BOTTOM AD ================= -->
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-black py-2 z-50 text-center shadow-[0_-5px_15px_rgba(0,0,0,0.5)]">
+        <button onclick="this.parentElement.style.display='none'" class="absolute top-0 right-2 bg-red-500 text-white border-2 border-black rounded px-2 font-bold text-xs -mt-3">Close</button>
+        <!-- BEGIN AADS AD UNIT 2438783 -->
+        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
+          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
+                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
+        </div>
+        <!-- END AADS AD UNIT 2438783 -->
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // --- 1. Redeem Code Logic ---
+        function redeemCode() {
+            let input = document.getElementById('redeemInput').value;
+            let msgBox = document.getElementById('redeemMessage');
+            
+            if(input.trim() === "") {
+                msgBox.textContent = "Bhai pehle code toh daal! 🤦‍♂️";
+                msgBox.className = "mt-4 font-bold text-xl text-red-600 block";
+                return;
+            }
+
+            msgBox.textContent = "Checking Code... ⏳";
+            msgBox.className = "mt-4 font-bold text-xl text-blue-600 block";
+
+            // Fake delay for fun
+            setTimeout(() => {
+                if(input.toUpperCase() === "BANANA") {
+                    msgBox.textContent = "🎉 SUCCESS! You got 10,000 Diamonds! 🎉";
+                    msgBox.className = "mt-4 font-bold text-2xl text-green-700 block cartoon-box p-2 bg-white";
+                } else {
+                    msgBox.textContent = "❌ Code Expired or Invalid! Try another ad! 😂";
+                    msgBox.className = "mt-4 font-bold text-xl text-red-600 block";
+                }
+            }, 1500);
+        }
+
+        // --- 2. Generator Fake Logic ---
+        function startGenerator() {
+            let btn = document.getElementById('genBtn');
+            let container = document.getElementById('progressContainer');
+            let bar = document.getElementById('progressBar');
+            let text = document.getElementById('progressText');
+
+            btn.style.display = 'none';
+            container.classList.remove('hidden');
+
+            let progress = 0;
+            let interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15);
+                if(progress > 100) progress = 100;
+                
+                bar.style.width = progress + '%';
+
+                if(progress < 30) text.textContent = "Connecting to server... 🌍";
+                else if(progress < 60) text.textContent = "Finding username... 🕵️‍♂️";
+                else if(progress < 90) text.textContent = "Adding resources... 💎";
+                else text.textContent = "Finalizing... ⚙️";
+
+                if(progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        text.innerHTML = "<span class='text-red-600'>⚠️ HUMAN VERIFICATION REQUIRED!</span><br><small>Click any ad below to verify 😂</small>";
+                        // Show annoying popup again
+                        document.getElementById('popupAd').style.display = 'flex';
+                        btn.style.display = 'block';
+                        btn.textContent = "VERIFY NOW";
+                        btn.classList.replace('bg-blue-500', 'bg-red-500');
+                    }, 500);
+                }
+            }, 500);
+        }
+
+        // --- 3. Annoying Popup Logic ---
+        // Show popup after 3 seconds of loading
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('popupAd').style.display = 'flex';
+            }, 3000);
+        };
+
+        function closePopup() {
+            document.getElementById('popupAd').style.display = 'none';
+            alert("Ads block mat kar mere bhai! 😂");
+        }
+    </script>
 </body>
 </html>
