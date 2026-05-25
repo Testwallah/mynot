@@ -1,56 +1,160 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- JuicyAds Site Verification -->
-    <meta name="juicyads-site-verification" content="ee855a5f5b8622de22184150fa769eab">
+  <!-- JuicyAds Verification -->
+  <meta name="juicyads-site-verification" content="ee855a5f5b8622de22184150fa769eab">
 
-    <title>My Website</title>
+  <title>Modern Ads Page</title>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        .box {
-            background: #1e1e1e;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255,255,255,0.1);
-            width: 90%;
-            max-width: 500px;
-        }
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
+      min-height: 100vh;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        h1 {
-            color: #00ff99;
-        }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 30px;
+      padding: 35px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      text-align: center;
+    }
 
-        p {
-            color: #ccc;
-            line-height: 1.6;
-        }
-    </style>
+    .logo {
+      font-size: 38px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg,#00ff99,#00ccff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #cfcfcf;
+      margin-bottom: 30px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .ad-box {
+      background: rgba(255,255,255,0.07);
+      border-radius: 25px;
+      padding: 25px;
+      margin-top: 25px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.3s ease;
+    }
+
+    .ad-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,255,153,0.15);
+    }
+
+    .ad-title {
+      font-size: 22px;
+      margin-bottom: 18px;
+      color: #00ff99;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(90deg,#00ff99,#00ccff);
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 35px;
+      color: #999;
+      font-size: 14px;
+    }
+
+    @media(max-width:600px){
+      .container{
+        padding:20px;
+      }
+
+      .logo{
+        font-size:28px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="box">
-        <h1>Website Verified ✅</h1>
-        <p>
-            JuicyAds verification meta tag successfully added inside the
-            <code>&lt;head&gt;</code> section.
-        </p>
+  <div class="container">
+
+    <div class="logo">Modern Ads Zone 🔥</div>
+
+    <div class="subtitle">
+      Best modern rounded UI with integrated JuicyAds banner and native interstitial ads.
     </div>
 
+    <!-- Banner Ad -->
+    <div class="ad-box">
+      <div class="ad-title">Sponsored Banner</div>
+
+      <!-- JuicyAds v3.0 -->
+      <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
+
+      <ins id="1118631" data-width="300" data-height="50"></ins>
+
+      <script type="text/javascript" data-cfasync="false" async>
+        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1118631});
+      </script>
+      <!-- JuicyAds END -->
+
+    </div>
+
+    <!-- Native Interstitial Ads -->
+    <div class="ad-box">
+      <div class="ad-title">Interactive Ads</div>
+
+      <!-- JuicyAds Native Interstitals v1.0 -->
+      <script
+        type="text/javascript"
+        data-id="juicyads-native-ads"
+        data-ad-zone="1118629"
+        data-targets="a"
+        src="https://js.juicyads.com/juicyads.native-ads.min.js">
+      </script>
+
+      <a href="#" class="btn">Open Premium Content</a>
+    </div>
+
+    <footer>
+      © 2026 Modern Rounded Ads Page
+    </footer>
+
+  </div>
+
 </body>
-</html>
+          </html>
