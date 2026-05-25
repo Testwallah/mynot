@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>भारत क्विज़ Challenge 🇮🇳</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    overflow-x:hidden;
+}
+
+.quiz-box{
+    width:100%;
+    max-width:750px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+    color:white;
+    animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.title{
+    text-align:center;
+    font-size:34px;
+    font-weight:700;
+    margin-bottom:10px;
+    background:linear-gradient(90deg,#ff9933,#ffffff,#138808);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+    text-align:center;
+    color:#d1d5db;
+    margin-bottom:25px;
+}
+
+.question-count{
+    margin-bottom:15px;
+    font-size:15px;
+    color:#93c5fd;
+}
+
+.question{
+    font-size:24px;
+    font-weight:600;
+    margin-bottom:25px;
+    line-height:1.5;
+}
+
+.options{
+    display:grid;
+    gap:15px;
+}
+
+.option{
+    padding:15px 18px;
+    border-radius:16px;
+    border:2px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.05);
+    cursor:pointer;
+    transition:0.3s;
+    font-size:17px;
+}
+
+.option:hover{
+    transform:scale(1.02);
+    background:rgba(255,255,255,0.12);
+    border-color:#38bdf8;
+}
+
+.correct{
+    background:#16a34a !important;
+    border-color:#22c55e !important;
+}
+
+.wrong{
+    background:#dc2626 !important;
+    border-color:#ef4444 !important;
+}
+
+.controls{
+    margin-top:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.score{
+    font-size:18px;
+    font-weight:600;
+    color:#facc15;
+}
+
+.btn{
+    padding:13px 25px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(90deg,#ff6b00,#ffb700);
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.05);
+}
+
+.result{
+    text-align:center;
+    display:none;
+}
+
+.result h2{
+    font-size:40px;
+    margin-bottom:15px;
+}
+
+.result p{
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+@media(max-width:600px){
+
+.question{
+    font-size:20px;
+}
+
+.option{
+    font-size:15px;
+}
+
+.title{
+    font-size:28px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+
+    <div id="quizArea">
+
+        <h1 class="title">भारत Quiz Challenge 🇮🇳🔥</h1>
+        <p class="subtitle">10 MCQs Modern Quiz App</p>
+
+        <div class="question-count" id="count"></div>
+
+        <div class="question" id="question"></div>
+
+        <div class="options" id="options"></div>
+
+        <div class="controls">
+            <div class="score">Score: <span id="score">0</span></div>
+            <button class="btn" onclick="nextQuestion()">Next ➜</button>
+        </div>
+
+    </div>
+
+    <div class="result" id="resultBox">
+        <h2>🎉 Quiz Completed</h2>
+        <p id="finalScore"></p>
+        <button class="btn" onclick="location.reload()">Play Again 🔥</button>
+    </div>
+
+</div>
+
+<script>
+
+const quiz = [
+
+{
+question:"भारत की राजधानी क्या है?",
+options:["मुंबई","दिल्ली","कोलकाता","चेन्नई"],
+answer:"दिल्ली"
+},
+
+{
+question:"HTML का पूरा नाम क्या है?",
+options:[
+"Hyper Text Markup Language",
+"High Text Machine Language",
+"Hyper Tool Multi Language",
+"Home Text Markup Language"
+],
+answer:"Hyper Text Markup Language"
+},
+
+{
+question:"भारत का राष्ट्रीय पशु कौन है?",
+options:["हाथी","शेर","बाघ","घोड़ा"],
+answer:"बाघ"
+},
+
+{
+question:"CSS का उपयोग किसलिए होता है?",
+options:[
+"स्टाइलिंग",
+"डेटाबेस",
+"गेम बनाने",
+"सर्वर बनाने"
+],
+answer:"स्टाइलिंग"
+},
+
+{
+question:"भारत का राष्ट्रीय खेल कौन सा माना जाता है?",
+options:["क्रिकेट","हॉकी","फुटबॉल","कबड्डी"],
+answer:"हॉकी"
+},
+
+{
+question:"JavaScript का उपयोग किसलिए होता है?",
+options:[
+"वेबसाइट को Interactive बनाने",
+"कपड़े डिजाइन करने",
+"वीडियो एडिट करने",
+"फोन बनाने"
+],
+answer:"वेबसाइट को Interactive बनाने"
+},
+
+{
+question:"तिरंगे में बीच का रंग कौन सा होता है?",
+options:["हरा","सफेद","केसरिया","नीला"],
+answer:"सफेद"
+},
+
+{
+question:"भारत का राष्ट्रीय गान किसने लिखा?",
+options:[
+"महात्मा गांधी",
+"रवीन्द्रनाथ टैगोर",
+"प्रेमचंद",
+"भगत सिंह"
+],
+answer:"रवीन्द्रनाथ टैगोर"
+},
+
+{
+question:"WWW का मतलब क्या होता है?",
+options:[
+"World Wide Web",
+"World Web Wide",
+"Web World Wide",
+"Wide World Web"
+],
+answer:"World Wide Web"
+},
+
+{
+question:"भारत की मुद्रा क्या है?",
+options:["डॉलर","रुपया","यूरो","येन"],
+answer:"रुपया"
+}
+
+];
+
+let current = 0;
+let score = 0;
+
+const question = document.getElementById("question");
+const options = document.getElementById("options");
+const scoreText = document.getElementById("score");
+const count = document.getElementById("count");
+
+function loadQuestion(){
+
+    let q = quiz[current];
+
+    count.innerHTML = `Question ${current+1} / ${quiz.length}`;
+
+    question.innerHTML = q.question;
+
+    options.innerHTML = "";
+
+    q.options.forEach(option => {
+
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.innerHTML = option;
+
+        btn.onclick = () => checkAnswer(btn, q.answer);
+
+        options.appendChild(btn);
+
+    });
+
+}
+
+function checkAnswer(selected, correct){
+
+    const allOptions = document.querySelectorAll(".option");
+
+    allOptions.forEach(opt => {
+        opt.style.pointerEvents = "none";
+
+        if(opt.innerHTML === correct){
+            opt.classList.add("correct");
+        }
+    });
+
+    if(selected.innerHTML === correct){
+
+        score++;
+        scoreText.innerHTML = score;
+
+    }else{
+        selected.classList.add("wrong");
+    }
+
+}
+
+function nextQuestion(){
+
+    current++;
+
+    if(current < quiz.length){
+
+        loadQuestion();
+
+    }else{
+
+        document.getElementById("quizArea").style.display = "none";
+        document.getElementById("resultBox").style.display = "block";
+
+        document.getElementById("finalScore").innerHTML =
+        `🔥 Your Score: ${score} / ${quiz.length}`;
+
+    }
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
