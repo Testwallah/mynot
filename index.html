@@ -1,293 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cartoon Gaming Hub 🎮</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for Cartoon Look -->
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- JuicyAds Site Verification -->
+    <meta name="juicyads-site-verification" content="ee855a5f5b8622de22184150fa769eab">
+
+    <title>My Website</title>
 
     <style>
-        /* Custom Cartoon Styles */
         body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #4ade80; /* Fun Green Background */
-            background-image: radial-gradient(#22c55e 2px, transparent 2px);
-            background-size: 30px 30px;
-            overflow-x: hidden;
-        }
-        
-        h1, h2, h3, .bangers-font {
-            font-family: 'Bangers', cursive;
-            letter-spacing: 2px;
-        }
-
-        /* Neo-brutalism Cartoon Borders */
-        .cartoon-box {
-            background-color: white;
-            border: 4px solid black;
-            border-radius: 16px;
-            box-shadow: 8px 8px 0px black;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .cartoon-btn {
-            background-color: #facc15; /* Yellow */
-            border: 4px solid black;
-            border-radius: 12px;
-            box-shadow: 4px 4px 0px black;
-            font-family: 'Bangers', cursive;
-            letter-spacing: 1px;
-            transition: all 0.1s;
-        }
-
-        .cartoon-btn:active {
-            transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px black;
-        }
-
-        .cartoon-input {
-            border: 4px solid black;
-            border-radius: 12px;
-            box-shadow: inset 4px 4px 0px rgba(0,0,0,0.1);
-        }
-
-        /* Annoying Ad Popups */
-        .popup-ad-container {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 999999;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .box {
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #00ff99;
+        }
+
+        p {
+            color: #ccc;
+            line-height: 1.6;
         }
     </style>
 </head>
-<body class="text-gray-900 pb-32"> <!-- pb-32 for sticky bottom ad -->
+<body>
 
-    <!-- ================= NAVBAR ================= -->
-    <nav class="bg-purple-500 border-b-4 border-black p-4 sticky top-0 z-50 shadow-[0_8px_0px_rgba(0,0,0,1)]">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <div class="text-3xl bangers-font text-white text-shadow-cartoon" style="text-shadow: 2px 2px 0 #000;">
-                <i class="fa-solid fa-gamepad text-yellow-400"></i> GAMER PRO
-            </div>
-            <!-- Desktop Menu -->
-            <ul class="hidden md:flex space-x-6 text-white bangers-font text-2xl" style="text-shadow: 2px 2px 0 #000;">
-                <li><a href="#" class="hover:text-yellow-400">Home</a></li>
-                <li><a href="#rewards" class="hover:text-yellow-400">Rewards</a></li>
-                <li><a href="#generator" class="hover:text-yellow-400">Generator</a></li>
-            </ul>
-            <!-- Mobile Menu Btn -->
-            <button class="md:hidden text-white text-2xl" onclick="alert('Bhai pehle Ads dekho! 😆')">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- ================= AD 1 (TOP) ================= -->
-    <div class="my-6 text-center">
-        <p class="text-xs font-bold mb-1">Advertisement</p>
-        <!-- BEGIN AADS AD UNIT 2438783 -->
-        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
-          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
-                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
-        </div>
-        <!-- END AADS AD UNIT 2438783 -->
+    <div class="box">
+        <h1>Website Verified ✅</h1>
+        <p>
+            JuicyAds verification meta tag successfully added inside the
+            <code>&lt;head&gt;</code> section.
+        </p>
     </div>
 
-    <!-- ================= HERO SECTION ================= -->
-    <header class="max-w-4xl mx-auto mt-8 px-4 text-center">
-        <div class="cartoon-box bg-blue-400 p-8">
-            <h1 class="text-5xl md:text-7xl text-white mb-4" style="text-shadow: 3px 3px 0 #000;">Welcome to Gaming Hub! 🚀</h1>
-            <p class="text-xl md:text-2xl font-bold mb-6 text-black">Get Free Rewards, Redeem Codes & Generate Resources Instantly!</p>
-            <a href="#generator" class="cartoon-btn text-2xl px-8 py-4 inline-block bg-yellow-400 text-black">Start Generating! ⚡</a>
-        </div>
-    </header>
-
-    <!-- ================= AD 2 (MIDDLE) ================= -->
-    <div class="my-8 text-center bg-red-200 border-y-4 border-black py-4">
-        <p class="text-xs font-bold mb-1">Bhai Ek Aur Ad Dekho 😂</p>
-        <!-- BEGIN AADS AD UNIT 2438783 -->
-        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
-          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
-                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
-        </div>
-        <!-- END AADS AD UNIT 2438783 -->
-    </div>
-
-    <!-- ================= REWARDS SECTION ================= -->
-    <section id="rewards" class="max-w-3xl mx-auto mt-12 px-4">
-        <div class="cartoon-box bg-pink-400 p-8 text-center">
-            <h2 class="text-4xl text-white mb-2" style="text-shadow: 2px 2px 0 #000;"><i class="fa-solid fa-gift"></i> Redeem Code</h2>
-            <p class="font-bold mb-6 text-black">Apna secret code yahan dalo aur magic dekho!</p>
-            
-            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
-                <input type="text" id="redeemInput" placeholder="ENTER CODE HERE..." class="cartoon-input w-full md:w-2/3 text-2xl p-4 font-bold text-center uppercase focus:outline-none">
-                <button onclick="redeemCode()" class="cartoon-btn w-full md:w-1/3 text-2xl py-4 bg-green-400">REDEEM NOW</button>
-            </div>
-            <p id="redeemMessage" class="mt-4 font-bold text-xl hidden"></p>
-        </div>
-    </section>
-
-    <!-- ================= AD 3 (PARESAN KARNE WALA) ================= -->
-    <div class="my-10 text-center">
-        <!-- BEGIN AADS AD UNIT 2438783 -->
-        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
-          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
-                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
-        </div>
-        <!-- END AADS AD UNIT 2438783 -->
-    </div>
-
-    <!-- ================= GENERATOR SECTION ================= -->
-    <section id="generator" class="max-w-3xl mx-auto mt-12 px-4 mb-20">
-        <div class="cartoon-box bg-yellow-300 p-8">
-            <h2 class="text-4xl text-center mb-6 text-black" style="text-shadow: 2px 2px 0 white;"><i class="fa-solid fa-gem text-blue-500"></i> Resource Generator</h2>
-            
-            <div class="space-y-4 font-bold">
-                <div>
-                    <label class="block text-xl mb-2">1. Select Game 🎮</label>
-                    <select class="cartoon-input w-full p-4 text-xl">
-                        <option>Free Fire (Diamonds)</option>
-                        <option>BGMI (UC)</option>
-                        <option>Roblox (Robux)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xl mb-2">2. Enter Username 👤</label>
-                    <input type="text" placeholder="Gamer Name..." class="cartoon-input w-full p-4 text-xl">
-                </div>
-                <div>
-                    <label class="block text-xl mb-2">3. Amount 💰</label>
-                    <select class="cartoon-input w-full p-4 text-xl">
-                        <option>💎 10,000</option>
-                        <option>💎 50,000</option>
-                        <option>💎 99,999 (MAX)</option>
-                    </select>
-                </div>
-
-                <div class="text-center pt-4">
-                    <button onclick="startGenerator()" id="genBtn" class="cartoon-btn text-3xl px-10 py-4 bg-blue-500 text-white w-full">GENERATE 🚀</button>
-                </div>
-
-                <!-- Progress Bar -->
-                <div id="progressContainer" class="hidden mt-6">
-                    <p id="progressText" class="text-center text-xl mb-2">Connecting to server...</p>
-                    <div class="w-full h-8 border-4 border-black rounded-full bg-white overflow-hidden">
-                        <div id="progressBar" class="h-full bg-green-500 w-0 transition-all duration-300"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= POPUP AD (EXTREMELY ANNOYING) ================= -->
-    <div id="popupAd" class="popup-ad-container flex">
-        <div class="cartoon-box bg-white p-6 max-w-sm text-center relative">
-            <button onclick="closePopup()" class="absolute -top-4 -right-4 bg-red-500 text-white border-4 border-black rounded-full w-10 h-10 font-bold text-xl hover:bg-red-400">X</button>
-            <h2 class="text-2xl text-red-500 mb-4">Wait! Special Offer! 🛑</h2>
-            <!-- BEGIN AADS AD UNIT 2438783 -->
-            <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
-              <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
-                                style='border:0; padding:0; width:100%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
-            </div>
-            <!-- END AADS AD UNIT 2438783 -->
-            <p class="mt-4 text-sm font-bold">Please click the ad to support us! 🙏</p>
-        </div>
-    </div>
-
-    <!-- ================= STICKY BOTTOM AD ================= -->
-    <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-black py-2 z-50 text-center shadow-[0_-5px_15px_rgba(0,0,0,0.5)]">
-        <button onclick="this.parentElement.style.display='none'" class="absolute top-0 right-2 bg-red-500 text-white border-2 border-black rounded px-2 font-bold text-xs -mt-3">Close</button>
-        <!-- BEGIN AADS AD UNIT 2438783 -->
-        <div class="frame" style="width: 100%;margin: auto;position: relative; z-index: 99998;">
-          <iframe data-aa='2438783' src='//acceptable.a-ads.com/2438783/?size=Adaptive'
-                            style='border:0; padding:0; width:70%; height:auto; overflow:hidden;display: block;margin: auto'></iframe>
-        </div>
-        <!-- END AADS AD UNIT 2438783 -->
-    </div>
-
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
-    <script>
-        // --- 1. Redeem Code Logic ---
-        function redeemCode() {
-            let input = document.getElementById('redeemInput').value;
-            let msgBox = document.getElementById('redeemMessage');
-            
-            if(input.trim() === "") {
-                msgBox.textContent = "Bhai pehle code toh daal! 🤦‍♂️";
-                msgBox.className = "mt-4 font-bold text-xl text-red-600 block";
-                return;
-            }
-
-            msgBox.textContent = "Checking Code... ⏳";
-            msgBox.className = "mt-4 font-bold text-xl text-blue-600 block";
-
-            // Fake delay for fun
-            setTimeout(() => {
-                if(input.toUpperCase() === "BANANA") {
-                    msgBox.textContent = "🎉 SUCCESS! You got 10,000 Diamonds! 🎉";
-                    msgBox.className = "mt-4 font-bold text-2xl text-green-700 block cartoon-box p-2 bg-white";
-                } else {
-                    msgBox.textContent = "❌ Code Expired or Invalid! Try another ad! 😂";
-                    msgBox.className = "mt-4 font-bold text-xl text-red-600 block";
-                }
-            }, 1500);
-        }
-
-        // --- 2. Generator Fake Logic ---
-        function startGenerator() {
-            let btn = document.getElementById('genBtn');
-            let container = document.getElementById('progressContainer');
-            let bar = document.getElementById('progressBar');
-            let text = document.getElementById('progressText');
-
-            btn.style.display = 'none';
-            container.classList.remove('hidden');
-
-            let progress = 0;
-            let interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 15);
-                if(progress > 100) progress = 100;
-                
-                bar.style.width = progress + '%';
-
-                if(progress < 30) text.textContent = "Connecting to server... 🌍";
-                else if(progress < 60) text.textContent = "Finding username... 🕵️‍♂️";
-                else if(progress < 90) text.textContent = "Adding resources... 💎";
-                else text.textContent = "Finalizing... ⚙️";
-
-                if(progress === 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        text.innerHTML = "<span class='text-red-600'>⚠️ HUMAN VERIFICATION REQUIRED!</span><br><small>Click any ad below to verify 😂</small>";
-                        // Show annoying popup again
-                        document.getElementById('popupAd').style.display = 'flex';
-                        btn.style.display = 'block';
-                        btn.textContent = "VERIFY NOW";
-                        btn.classList.replace('bg-blue-500', 'bg-red-500');
-                    }, 500);
-                }
-            }, 500);
-        }
-
-        // --- 3. Annoying Popup Logic ---
-        // Show popup after 3 seconds of loading
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('popupAd').style.display = 'flex';
-            }, 3000);
-        };
-
-        function closePopup() {
-            document.getElementById('popupAd').style.display = 'none';
-            alert("Ads block mat kar mere bhai! 😂");
-        }
-    </script>
 </body>
 </html>
