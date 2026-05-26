@@ -1,160 +1,199 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- JuicyAds Verification -->
-  <meta name="juicyads-site-verification" content="ee855a5f5b8622de22184150fa769eab">
-
-  <title>Modern Ads Page</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #0f0f0f, #1b1b1b);
-      min-height: 100vh;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 900px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(12px);
-      border-radius: 30px;
-      padding: 35px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      text-align: center;
-    }
-
-    .logo {
-      font-size: 38px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg,#00ff99,#00ccff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-      color: #cfcfcf;
-      margin-bottom: 30px;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    .ad-box {
-      background: rgba(255,255,255,0.07);
-      border-radius: 25px;
-      padding: 25px;
-      margin-top: 25px;
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: 0.3s ease;
-    }
-
-    .ad-box:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0,255,153,0.15);
-    }
-
-    .ad-title {
-      font-size: 22px;
-      margin-bottom: 18px;
-      color: #00ff99;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 28px;
-      border-radius: 50px;
-      text-decoration: none;
-      color: white;
-      background: linear-gradient(90deg,#00ff99,#00ccff);
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-    }
-
-    footer {
-      margin-top: 35px;
-      color: #999;
-      font-size: 14px;
-    }
-
-    @media(max-width:600px){
-      .container{
-        padding:20px;
-      }
-
-      .logo{
-        font-size:28px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Game - AI Age & Gender Verification</title>
+    
+    <!-- लेटेस्ट और सही Face-API.js लाइब्रेरी (बिना defer के ताकि पहले लोड हो) -->
+    <script src="https://jsdelivr.net"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #ff4500;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        p {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .container {
+            position: relative;
+            width: 320px;
+            height: 240px;
+            border: 4px solid #ff4500;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #000;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #status {
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #00ffcc;
+            text-align: center;
+            padding: 0 10px;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            width: 290px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: none;
+        }
+        .code-text {
+            font-size: 22px;
+            color: #ffcc00;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 5px;
+            border: 1px dashed #ffcc00;
+            background: #2a2a2a;
+        }
+        .btn {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .btn:hover { background-color: #e03e00; }
+    </style>
 </head>
 <body>
 
-  <div class="container">
+    <h1>AI वेरिफिकेशन सिस्टम</h1>
+    <p>कृपया कैमरे के सामने सीधे देखें...</p>
 
-    <div class="logo">Modern Ads Zone 🔥</div>
-
-    <div class="subtitle">
-      Best modern rounded UI with integrated JuicyAds banner and native interstitial ads.
+    <div class="container">
+        <video id="video" autoplay muted playsinline></video>
     </div>
 
-    <!-- Banner Ad -->
-    <div class="ad-box">
-      <div class="ad-title">Sponsored Banner</div>
+    <div id="status">AI लाइब्रेरी चेक की जा रही है...</div>
 
-      <!-- JuicyAds v3.0 -->
-      <script type="text/javascript" data-cfasync="false" async src="https://poweredby.jads.co/js/jads.js"></script>
-
-      <ins id="1118631" data-width="300" data-height="50"></ins>
-
-      <script type="text/javascript" data-cfasync="false" async>
-        (adsbyjuicy = window.adsbyjuicy || []).push({'adzone':1118631});
-      </script>
-      <!-- JuicyAds END -->
-
+    <div class="result-box" id="resultBox">
+        <div id="info"></div>
+        <div class="code-text" id="verificationCode">------</div>
+        <button class="btn" onclick="copyCode()">कोड कॉपी करें और गेम में जाएँ</button>
     </div>
 
-    <!-- Native Interstitial Ads -->
-    <div class="ad-box">
-      <div class="ad-title">Interactive Ads</div>
+    <script>
+        const video = document.getElementById('video');
+        const statusDiv = document.getElementById('status');
+        const resultBox = document.getElementById('resultBox');
+        const infoDiv = document.getElementById('info');
+        const codeDiv = document.getElementById('verificationCode');
 
-      <!-- JuicyAds Native Interstitals v1.0 -->
-      <script
-        type="text/javascript"
-        data-id="juicyads-native-ads"
-        data-ad-zone="1118629"
-        data-targets="a"
-        src="https://js.juicyads.com/juicyads.native-ads.min.js">
-      </script>
+        // मॉडल की सही लोकेशन
+        const MODEL_URL = 'https://jsdelivr.net';
 
-      <a href="#" class="btn">Open Premium Content</a>
-    </div>
+        async function init() {
+            // एरर रोकने के लिए सबसे पहले चेक करें कि faceapi लोड हुई या नहीं
+            if (typeof faceapi === 'undefined') {
+                statusDiv.style.color = '#ff3333';
+                statusDiv.innerText = "Error: faceapi लोड नहीं हो पाई। कृपया इंटरनेट कनेक्शन चेक करें या पेज रीफ्रेश करें।";
+                return;
+            }
 
-    <footer>
-      © 2026 Modern Rounded Ads Page
-    </footer>
+            try {
+                statusDiv.innerText = "AI मॉडल्स (उम्र और जेंडर) लोड हो रहे हैं...";
+                
+                // मॉडल्स को बैकएंड में लोड करना
+                await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+                await faceapi.nets.faceAgeGenderNet.loadFromUri(MODEL_URL);
+                
+                statusDiv.innerText = "कैमरा शुरू हो रहा है...";
+                startVideo();
+            } catch (err) {
+                statusDiv.style.color = '#ff3333';
+                statusDiv.innerText = "मॉडल लोड करने में दिक्कत: " + err.message;
+            }
+        }
 
-  </div>
+        function startVideo() {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                .then(stream => {
+                    video.srcObject = stream;
+                    statusDiv.style.color = '#00ffcc';
+                    statusDiv.innerText = "चेहरा स्कैन हो रहा है... स्क्रीन पर सीधे देखें...";
+                })
+                .catch(err => {
+                    statusDiv.style.color = '#ff3333';
+                    statusDiv.innerText = "कैमरा चालू नहीं हुआ! कृपया कैमरा परमिशन (Allow) दें।";
+                });
+        }
 
+        video.addEventListener('playing', () => {
+            const interval = setInterval(async () => {
+                if (video.paused || video.ended) return;
+
+                // चेहरे को ढूंढना और उसका डेटा निकालना
+                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+                                                .withAgeAndGender();
+
+                if (detections) {
+                    clearInterval(interval); // स्कैन पूरा होने पर रोकें
+                    
+                    const age = Math.round(detections.age);
+                    const gender = detections.gender; 
+
+                    let genderHindi = gender === 'male' ? 'MALE (पुरुष)' : 'FEMALE (महिला)';
+
+                    statusDiv.innerText = "स्कैनिंग 100% पूरी हुई! ✅";
+                    
+                    // रैंडम गेम वेरिफिकेशन कोड
+                    const randomCode = "FF-" + Math.floor(100000 + Math.random() * 900000);
+
+                    infoDiv.innerHTML = `<strong>उम्र (AI अनुमान):</strong> ${age} वर्ष<br><strong>जेंडर:</strong> ${genderHindi}`;
+                    codeDiv.innerText = randomCode;
+                    resultBox.style.display = 'block';
+
+                    // कैमरा बंद करें
+                    const stream = video.srcObject;
+                    if (stream) {
+                        const tracks = stream.getTracks();
+                        tracks.forEach(track => track.stop());
+                    }
+                }
+            }, 1000); // हर 1 सेकंड में स्कैन करेगा
+        });
+
+        function copyCode() {
+            const code = codeDiv.innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                alert("वेरिफिकेशन कोड कॉपी हो गया! अब गेम में पेस्ट करें।");
+            });
+        }
+
+        // पेज पूरी तरह लोड होने के बाद ही कोड रन करें
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
-          </html>
+</html>
