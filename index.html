@@ -1,199 +1,284 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF Game - AI Age & Gender Verification</title>
-    
-    <!-- लेटेस्ट और सही Face-API.js लाइब्रेरी (बिना defer के ताकि पहले लोड हो) -->
-    <script src="https://jsdelivr.net"></script>
-    
+    <title>Cartoon AI Face Scanner</title>
+    <!-- Google Fonts for Cartoon Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS for Layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Face API (The Brain of our Scanner) -->
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
     <style>
+        /* Cartoon Style 2026 (Neobrutalism) */
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            background-color: #ffde59;
+            background-image: radial-gradient(#ffbd00 20%, transparent 20%), radial-gradient(#ffbd00 20%, transparent 20%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
         }
-        h1 {
-            color: #ff4500;
-            margin-bottom: 5px;
-            font-size: 24px;
+
+        .cartoon-card {
+            background-color: white;
+            border: 6px solid black;
+            border-radius: 30px;
+            box-shadow: 10px 10px 0px black;
+            padding: 24px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            position: relative;
         }
-        p {
-            color: #aaa;
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            border: 5px solid black;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #ffe4e1;
+            box-shadow: inset 0px 0px 15px rgba(0,0,0,0.2);
             margin-bottom: 20px;
         }
-        .container {
-            position: relative;
-            width: 320px;
-            height: 240px;
-            border: 4px solid #ff4500;
-            border-radius: 10px;
-            overflow: hidden;
-            background-color: #000;
-        }
+
         video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform: scaleX(-1); /* Mirror effect */
         }
-        #status {
-            margin-top: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #00ffcc;
-            text-align: center;
-            padding: 0 10px;
-        }
-        .result-box {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #1e1e1e;
-            border-radius: 8px;
-            width: 290px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            display: none;
-        }
-        .code-text {
-            font-size: 22px;
-            color: #ffcc00;
-            letter-spacing: 2px;
-            font-weight: bold;
-            margin: 10px 0;
-            padding: 5px;
-            border: 1px dashed #ffcc00;
-            background: #2a2a2a;
-        }
-        .btn {
-            background-color: #ff4500;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
+
+        /* Scanning Animation */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 6px;
+            background-color: #00ffcc;
+            box-shadow: 0px 0px 15px 5px rgba(0, 255, 204, 0.7);
+            display: none;
+            z-index: 10;
         }
-        .btn:hover { background-color: #e03e00; }
+
+        .scanning .scan-line {
+            display: block;
+            animation: scanAnim 1.5s linear infinite alternate;
+        }
+
+        @keyframes scanAnim {
+            0% { top: 0%; }
+            100% { top: 98%; }
+        }
+
+        /* Cartoon Button */
+        .cartoon-btn {
+            background-color: #ff5757;
+            color: white;
+            border: 4px solid black;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 5px 5px 0px black;
+            transition: all 0.1s ease-in-out;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .cartoon-btn:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0px 0px 0px black;
+        }
+
+        .cartoon-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 5px 5px 0px black;
+        }
+
+        /* Result Box */
+        .result-box {
+            display: none;
+            background-color: #cb6ce6;
+            color: white;
+            border: 4px solid black;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            box-shadow: 5px 5px 0px black;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 24px;
+            z-index: 50;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 6px solid #ffde59;
+            border-top: 6px solid #ff5757;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <h1>AI वेरिफिकेशन सिस्टम</h1>
-    <p>कृपया कैमरे के सामने सीधे देखें...</p>
+    <div class="cartoon-card">
+        <!-- Loading Screen for AI Models -->
+        <div id="loading-overlay">
+            <div class="spinner"></div>
+            <p id="loading-text">AI Models Load Ho Rahe Hain... ⏳<br><span class="text-sm text-gray-500">Wait Karo Dost...</span></p>
+        </div>
 
-    <div class="container">
-        <video id="video" autoplay muted playsinline></video>
-    </div>
+        <h1 class="text-3xl font-bold mb-4 text-black tracking-wide" style="text-shadow: 2px 2px 0px white;">🤖 AI Face Scanner</h1>
+        
+        <div class="video-container" id="vid-container">
+            <video id="video" autoplay muted playsinline></video>
+            <div class="scan-line"></div>
+        </div>
 
-    <div id="status">AI लाइब्रेरी चेक की जा रही है...</div>
+        <button id="scan-btn" class="cartoon-btn" disabled>📸 Click & Scan</button>
 
-    <div class="result-box" id="resultBox">
-        <div id="info"></div>
-        <div class="code-text" id="verificationCode">------</div>
-        <button class="btn" onclick="copyCode()">कोड कॉपी करें और गेम में जाएँ</button>
+        <div id="result" class="result-box">
+            <!-- Results will show here -->
+        </div>
     </div>
 
     <script>
         const video = document.getElementById('video');
-        const statusDiv = document.getElementById('status');
-        const resultBox = document.getElementById('resultBox');
-        const infoDiv = document.getElementById('info');
-        const codeDiv = document.getElementById('verificationCode');
+        const scanBtn = document.getElementById('scan-btn');
+        const resultBox = document.getElementById('result');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const vidContainer = document.getElementById('vid-container');
+        const loadingText = document.getElementById('loading-text');
 
-        // मॉडल की सही लोकेशन
-        const MODEL_URL = 'https://jsdelivr.net';
-
-        async function init() {
-            // एरर रोकने के लिए सबसे पहले चेक करें कि faceapi लोड हुई या नहीं
-            if (typeof faceapi === 'undefined') {
-                statusDiv.style.color = '#ff3333';
-                statusDiv.innerText = "Error: faceapi लोड नहीं हो पाई। कृपया इंटरनेट कनेक्शन चेक करें या पेज रीफ्रेश करें।";
-                return;
-            }
-
+        // Step 1: Load AI Models
+        async function loadModels() {
             try {
-                statusDiv.innerText = "AI मॉडल्स (उम्र और जेंडर) लोड हो रहे हैं...";
+                const modelUrl = 'https://justadudewhohacks.github.io/face-api.js/models';
                 
-                // मॉडल्स को बैकएंड में लोड करना
-                await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-                await faceapi.nets.faceAgeGenderNet.loadFromUri(MODEL_URL);
-                
-                statusDiv.innerText = "कैमरा शुरू हो रहा है...";
+                // Loading tiny face detector & age/gender network
+                await Promise.all([
+                    faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
+                    faceapi.nets.ageGenderNet.loadFromUri(modelUrl)
+                ]);
+
+                loadingText.innerHTML = "Camera Start Ho Raha Hai... 🎥";
                 startVideo();
-            } catch (err) {
-                statusDiv.style.color = '#ff3333';
-                statusDiv.innerText = "मॉडल लोड करने में दिक्कत: " + err.message;
+            } catch (error) {
+                console.error(error);
+                loadingText.innerHTML = "❌ Internet Issue! Models Load Nahi Hue.";
             }
         }
 
+        // Step 2: Start Camera
         function startVideo() {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-                .then(stream => {
-                    video.srcObject = stream;
-                    statusDiv.style.color = '#00ffcc';
-                    statusDiv.innerText = "चेहरा स्कैन हो रहा है... स्क्रीन पर सीधे देखें...";
-                })
-                .catch(err => {
-                    statusDiv.style.color = '#ff3333';
-                    statusDiv.innerText = "कैमरा चालू नहीं हुआ! कृपया कैमरा परमिशन (Allow) दें।";
-                });
-        }
-
-        video.addEventListener('playing', () => {
-            const interval = setInterval(async () => {
-                if (video.paused || video.ended) return;
-
-                // चेहरे को ढूंढना और उसका डेटा निकालना
-                const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
-                                                .withAgeAndGender();
-
-                if (detections) {
-                    clearInterval(interval); // स्कैन पूरा होने पर रोकें
-                    
-                    const age = Math.round(detections.age);
-                    const gender = detections.gender; 
-
-                    let genderHindi = gender === 'male' ? 'MALE (पुरुष)' : 'FEMALE (महिला)';
-
-                    statusDiv.innerText = "स्कैनिंग 100% पूरी हुई! ✅";
-                    
-                    // रैंडम गेम वेरिफिकेशन कोड
-                    const randomCode = "FF-" + Math.floor(100000 + Math.random() * 900000);
-
-                    infoDiv.innerHTML = `<strong>उम्र (AI अनुमान):</strong> ${age} वर्ष<br><strong>जेंडर:</strong> ${genderHindi}`;
-                    codeDiv.innerText = randomCode;
-                    resultBox.style.display = 'block';
-
-                    // कैमरा बंद करें
-                    const stream = video.srcObject;
-                    if (stream) {
-                        const tracks = stream.getTracks();
-                        tracks.forEach(track => track.stop());
-                    }
-                }
-            }, 1000); // हर 1 सेकंड में स्कैन करेगा
-        });
-
-        function copyCode() {
-            const code = codeDiv.innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                alert("वेरिफिकेशन कोड कॉपी हो गया! अब गेम में पेस्ट करें।");
+            navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: "user" } // Front camera
+            })
+            .then(stream => {
+                video.srcObject = stream;
+                // Wait for video to be ready before removing loading screen
+                video.onloadedmetadata = () => {
+                    loadingOverlay.style.display = 'none';
+                    scanBtn.disabled = false;
+                };
+            })
+            .catch(err => {
+                console.error(err);
+                loadingText.innerHTML = "❌ Camera Permission Denied!<br>Allow Karo Please.";
             });
         }
 
-        // पेज पूरी तरह लोड होने के बाद ही कोड रन करें
-        window.addEventListener('DOMContentLoaded', init);
+        // Step 3: Scan on Button Click
+        scanBtn.addEventListener('click', async () => {
+            // Reset UI
+            resultBox.style.display = 'none';
+            vidContainer.classList.add('scanning');
+            scanBtn.innerText = "⏳ Scanning...";
+            scanBtn.disabled = true;
+
+            // Wait a little bit for the cool scanning animation effect
+            setTimeout(async () => {
+                try {
+                    // Detect Face, Age, and Gender
+                    const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
+                    
+                    vidContainer.classList.remove('scanning');
+                    scanBtn.innerText = "📸 Scan Again";
+                    scanBtn.disabled = false;
+
+                    if (detections) {
+                        // Success! Show Results
+                        const age = Math.round(detections.age);
+                        const gender = detections.gender === 'male' ? 'Ladka 👦' : 'Ladki 👧';
+                        
+                        // Adding some fun to the exact age
+                        resultBox.innerHTML = `
+                            <div class="text-xl mb-2">✨ Face Detected! ✨</div>
+                            <div class="bg-white text-black rounded-lg p-2 mb-2 border-2 border-black">
+                                <b>Umar (Age):</b> ${age} Saal
+                            </div>
+                            <div class="bg-white text-black rounded-lg p-2 border-2 border-black">
+                                <b>Gender:</b> ${gender}
+                            </div>
+                        `;
+                        resultBox.style.backgroundColor = detections.gender === 'male' ? '#38bdf8' : '#f472b6';
+                        resultBox.style.display = 'block';
+                    } else {
+                        // Fail! No face found
+                        resultBox.innerHTML = `❌ Face Nahi Mila!<br><span class="text-sm">Sahi se camera me dekho!</span>`;
+                        resultBox.style.backgroundColor = '#ff4d4d';
+                        resultBox.style.display = 'block';
+                    }
+                } catch (error) {
+                    vidContainer.classList.remove('scanning');
+                    scanBtn.disabled = false;
+                    scanBtn.innerText = "📸 Try Again";
+                    alert("Kuch error aagaya scan karte time!");
+                }
+            }, 1500); // 1.5 seconds animation delay for feel
+        });
+
+        // Initialize App
+        window.onload = loadModels;
     </script>
 </body>
 </html>
