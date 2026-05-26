@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -133,7 +133,7 @@
         #loading-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -143,6 +143,8 @@
             font-size: 1.2rem;
             font-weight: bold;
             color: #333;
+            padding: 20px;
+            text-align: center;
         }
 
         .spinner {
@@ -156,25 +158,34 @@
         }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Error Text Style */
+        .error-text {
+            color: #d32f2f;
+            font-size: 1rem;
+            margin-top: 10px;
+            font-weight: normal;
+        }
     </style>
 </head>
 <body>
 
     <div class="cartoon-card">
-        <!-- Loading Screen for AI Models -->
+        <!-- Loading Screen -->
         <div id="loading-overlay">
-            <div class="spinner"></div>
-            <p id="loading-text">AI Models Load Ho Rahe Hain... ⏳<br><span class="text-sm text-gray-500">Wait Karo Dost...</span></p>
+            <div class="spinner" id="spinner"></div>
+            <p id="loading-text">AI दिमाग लोड हो रहा है... 🧠⏳<br><span class="text-sm text-gray-500">बस थोडा सा इंतज़ार...</span></p>
+            <p id="error-details" class="error-text" style="display: none;"></p>
         </div>
 
-        <h1 class="text-3xl font-bold mb-4 text-black tracking-wide" style="text-shadow: 2px 2px 0px white;">🤖 AI Face Scanner</h1>
+        <h1 class="text-3xl font-bold mb-4 text-black tracking-wide" style="text-shadow: 2px 2px 0px white;">🤖 AI Scanner</h1>
         
         <div class="video-container" id="vid-container">
             <video id="video" autoplay muted playsinline></video>
             <div class="scan-line"></div>
         </div>
 
-        <button id="scan-btn" class="cartoon-btn" disabled>📸 Click & Scan</button>
+        <button id="scan-btn" class="cartoon-btn" disabled>📸 फोटो खींचो</button>
 
         <div id="result" class="result-box">
             <!-- Results will show here -->
@@ -188,23 +199,30 @@
         const loadingOverlay = document.getElementById('loading-overlay');
         const vidContainer = document.getElementById('vid-container');
         const loadingText = document.getElementById('loading-text');
+        const spinner = document.getElementById('spinner');
+        const errorDetails = document.getElementById('error-details');
 
-        // Step 1: Load AI Models
+        // Step 1: Load AI Models (New Reliable Links)
         async function loadModels() {
             try {
-                const modelUrl = 'https://justadudewhohacks.github.io/face-api.js/models';
+                // Using raw.githubusercontent which is more reliable for direct file access
+                const MODEL_URL = 'https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights';
                 
-                // Loading tiny face detector & age/gender network
-                await Promise.all([
-                    faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
-                    faceapi.nets.ageGenderNet.loadFromUri(modelUrl)
-                ]);
+                loadingText.innerHTML = "दिमाग की बत्ती जला रहे हैं... 💡";
 
-                loadingText.innerHTML = "Camera Start Ho Raha Hai... 🎥";
+                // Loading models one by one to prevent timeouts
+                await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+                loadingText.innerHTML = "उम्र पहचानने की मशीन चालू... ⚙️";
+                await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
+
+                loadingText.innerHTML = "कैमरा चालू हो रहा है... 🎥";
                 startVideo();
             } catch (error) {
-                console.error(error);
-                loadingText.innerHTML = "❌ Internet Issue! Models Load Nahi Hue.";
+                console.error("Model Load Error:", error);
+                spinner.style.display = 'none';
+                loadingText.innerHTML = "❌ ओहो! कुछ गड़बड़ हो गई!";
+                errorDetails.style.display = 'block';
+                errorDetails.innerHTML = "चेहरा पहचानने वाली फाइलें डाउनलोड नहीं हो पाईं।<br>कृपया पेज को रिफ्रेश करें।";
             }
         }
 
@@ -215,70 +233,88 @@
             })
             .then(stream => {
                 video.srcObject = stream;
-                // Wait for video to be ready before removing loading screen
-                video.onloadedmetadata = () => {
-                    loadingOverlay.style.display = 'none';
-                    scanBtn.disabled = false;
-                };
+                // Wait for video to start playing
+                video.addEventListener('play', () => {
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                        scanBtn.disabled = false;
+                    }, 500); // Small delay for smooth transition
+                });
             })
             .catch(err => {
-                console.error(err);
-                loadingText.innerHTML = "❌ Camera Permission Denied!<br>Allow Karo Please.";
+                console.error("Camera Error:", err);
+                spinner.style.display = 'none';
+                loadingText.innerHTML = "❌ कैमरा चालू नहीं हो पाया!";
+                errorDetails.style.display = 'block';
+                errorDetails.innerHTML = "शायद आपने कैमरे की परमिशन नहीं दी है।<br>ब्राउज़र की सेटिंग में जाकर 'Allow' करें।";
             });
         }
+
+        // Wait for face-api.js to load before calling loadModels
+        window.addEventListener('load', () => {
+            // Check if faceapi is defined (the script loaded successfully)
+            if (typeof faceapi !== 'undefined') {
+                loadModels();
+            } else {
+                spinner.style.display = 'none';
+                loadingText.innerHTML = "❌ मुख्य फाइल लोड नहीं हुई!";
+                errorDetails.style.display = 'block';
+                errorDetails.innerHTML = "कृपया अपना इंटरनेट कनेक्शन चेक करें और रिफ्रेश करें।";
+            }
+        });
 
         // Step 3: Scan on Button Click
         scanBtn.addEventListener('click', async () => {
             // Reset UI
             resultBox.style.display = 'none';
             vidContainer.classList.add('scanning');
-            scanBtn.innerText = "⏳ Scanning...";
+            scanBtn.innerText = "⏳ स्कैनिंग चल रही है...";
             scanBtn.disabled = true;
 
-            // Wait a little bit for the cool scanning animation effect
+            // Give it 1.5 seconds for the cool animation
             setTimeout(async () => {
                 try {
                     // Detect Face, Age, and Gender
-                    const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withAgeAndGender();
+                    const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.3 });
+                    const detections = await faceapi.detectSingleFace(video, options).withAgeAndGender();
                     
                     vidContainer.classList.remove('scanning');
-                    scanBtn.innerText = "📸 Scan Again";
+                    scanBtn.innerText = "📸 फिर से खींचो";
                     scanBtn.disabled = false;
 
                     if (detections) {
                         // Success! Show Results
                         const age = Math.round(detections.age);
-                        const gender = detections.gender === 'male' ? 'Ladka 👦' : 'Ladki 👧';
+                        // Translate to Hindi
+                        const gender = detections.gender === 'male' ? 'लड़का 👦' : 'लड़की 👧';
                         
-                        // Adding some fun to the exact age
                         resultBox.innerHTML = `
-                            <div class="text-xl mb-2">✨ Face Detected! ✨</div>
+                            <div class="text-xl mb-2">✨ चेहरा मिल गया! ✨</div>
                             <div class="bg-white text-black rounded-lg p-2 mb-2 border-2 border-black">
-                                <b>Umar (Age):</b> ${age} Saal
+                                <b>उम्र (लगभग):</b> ${age} साल
                             </div>
                             <div class="bg-white text-black rounded-lg p-2 border-2 border-black">
-                                <b>Gender:</b> ${gender}
+                                <b>जेंडर:</b> ${gender}
                             </div>
                         `;
+                        // Change color based on gender for fun
                         resultBox.style.backgroundColor = detections.gender === 'male' ? '#38bdf8' : '#f472b6';
                         resultBox.style.display = 'block';
                     } else {
                         // Fail! No face found
-                        resultBox.innerHTML = `❌ Face Nahi Mila!<br><span class="text-sm">Sahi se camera me dekho!</span>`;
+                        resultBox.innerHTML = `❌ चेहरा साफ नहीं दिखा!<br><span class="text-sm">कैमरे के बिल्कुल सामने देखो मेरे दोस्त!</span>`;
                         resultBox.style.backgroundColor = '#ff4d4d';
                         resultBox.style.display = 'block';
                     }
                 } catch (error) {
+                    console.error("Scan Error:", error);
                     vidContainer.classList.remove('scanning');
                     scanBtn.disabled = false;
-                    scanBtn.innerText = "📸 Try Again";
-                    alert("Kuch error aagaya scan karte time!");
+                    scanBtn.innerText = "📸 दुबारा कोशिश करो";
+                    alert("स्कैन करते समय कुछ दिक्कत आ गई! फिर से ट्राई करो।");
                 }
-            }, 1500); // 1.5 seconds animation delay for feel
+            }, 1500); // 1.5 seconds animation delay
         });
-
-        // Initialize App
-        window.onload = loadModels;
     </script>
 </body>
 </html>
